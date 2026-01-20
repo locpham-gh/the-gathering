@@ -1,4 +1,4 @@
-import { LogIn, Users } from "lucide-react";
+import { LogIn } from "lucide-react";
 
 interface NavbarProps {
   onLoginClick: () => void;
