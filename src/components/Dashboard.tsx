@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
-import { LogOut, Layout, User, Settings } from "lucide-react";
+import { LogOut, Layout, User, Settings, Book, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 interface DashboardProps {
   user: any;
   onLogout: () => void;
 }
 
+type DashboardView = "overview" | "resources";
+
 export default function Dashboard({ user, onLogout }: DashboardProps) {
+  const [activeView, setActiveView] = useState<DashboardView>("overview");
+
   return (
     <div className="min-h-screen bg-slate-50 flex">
       {/* Sidebar Placeholder */}
@@ -15,14 +20,38 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
           <div className="bg-teal-600 p-2 rounded-lg text-white">
             <Layout size={20} />
           </div>
-          <span className="font-bold text-xl text-gray-900">Dashboard</span>
+          <span className="font-bold text-xl text-gray-900 capitalize">
+            {user?.role} Panel
+          </span>
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
-          <button className="flex items-center gap-3 w-full p-3 bg-teal-50 text-teal-700 rounded-xl font-semibold">
+          <button
+            onClick={() => setActiveView("overview")}
+            className={`flex items-center gap-3 w-full p-3 rounded-xl font-semibold transition-all cursor-pointer ${
+              activeView === "overview"
+                ? "bg-teal-50 text-teal-700"
+                : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
             <Layout size={20} />
             Overview
           </button>
+
+          {user?.role === "user" && (
+            <button
+              onClick={() => setActiveView("resources")}
+              className={`flex items-center gap-3 w-full p-3 rounded-xl font-semibold transition-all cursor-pointer ${
+                activeView === "resources"
+                  ? "bg-teal-50 text-teal-700"
+                  : "text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              <Book size={20} />
+              Resources
+            </button>
+          )}
+
           <button className="flex items-center gap-3 w-full p-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
             <User size={20} />
             Profile
@@ -49,10 +78,14 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
         <header className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-extrabold text-gray-900">
-              Welcome, {user?.username}!
+              {activeView === "overview"
+                ? `Welcome, ${user?.username}!`
+                : "Resource Library"}
             </h1>
             <p className="text-gray-500">
-              Here's what's happening in The Gathering today.
+              {activeView === "overview"
+                ? "Here's what's happening in The Gathering today."
+                : "Explore and manage your digital content."}
             </p>
           </div>
 
@@ -67,60 +100,101 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
           </div>
         </header>
 
-        {/* Simple Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {activeView === "overview" ? (
+          <>
+            {/* Simple Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+              >
+                <h3 className="text-gray-500 font-medium mb-1">
+                  Total Members
+                </h3>
+                <p className="text-3xl font-bold text-gray-900">1,280</p>
+                <div className="mt-4 flex items-center text-emerald-600 text-sm font-bold">
+                  <span>+12% from last week</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+              >
+                <h3 className="text-gray-500 font-medium mb-1">
+                  Active Resources
+                </h3>
+                <p className="text-3xl font-bold text-gray-900">45</p>
+                <div className="mt-4 flex items-center text-emerald-600 text-sm font-bold">
+                  <span>+5 new today</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+              >
+                <h3 className="text-gray-500 font-medium mb-1">
+                  Engagement Rate
+                </h3>
+                <p className="text-3xl font-bold text-gray-900">78%</p>
+                <div className="mt-4 flex items-center text-teal-600 text-sm font-bold">
+                  <span>Very high</span>
+                </div>
+              </motion.div>
+            </div>
+
+            <div className="mt-8 bg-white p-8 rounded-2xl border border-gray-100 border-dashed flex flex-col items-center justify-center text-center min-h-[300px]">
+              <div className="bg-slate-50 p-4 rounded-full text-slate-400 mb-4">
+                <Layout size={48} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Ready to expand?
+              </h3>
+              <p className="text-gray-500 max-w-md">
+                This is a simple dashboard placeholder to test your login
+                integration. More features coming soon!
+              </p>
+            </div>
+          </>
+        ) : (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white p-12 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center min-h-[500px]"
           >
-            <h3 className="text-gray-500 font-medium mb-1">Total Members</h3>
-            <p className="text-3xl font-bold text-gray-900">1,280</p>
-            <div className="mt-4 flex items-center text-emerald-600 text-sm font-bold">
-              <span>+12% from last week</span>
+            <div className="bg-teal-50 p-6 rounded-3xl text-teal-600 mb-6 border-2 border-teal-100 shadow-inner">
+              <Book size={64} />
+            </div>
+            <h2 className="text-4xl font-black text-gray-900 mb-4 uppercase tracking-tighter">
+              Resource Hub
+            </h2>
+            <div className="w-16 h-1.5 bg-linear-to-r from-teal-500 to-emerald-500 rounded-full mb-8"></div>
+            <p className="text-xl text-gray-600 max-w-lg mb-10 leading-relaxed font-medium">
+              This is where our flagship{" "}
+              <span className="text-teal-600 font-bold">Feature Lớn</span> will
+              live. The infrastructure is ready, and we are preparing the
+              knowledge base.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md">
+              <div className="p-4 bg-slate-50 rounded-xl border border-gray-100 flex items-center gap-3">
+                <Sparkles className="text-teal-600" size={20} />
+                <span className="text-gray-700 font-bold">
+                  Guides & E-books
+                </span>
+              </div>
+              <div className="p-4 bg-slate-50 rounded-xl border border-gray-100 flex items-center gap-3">
+                <Sparkles className="text-teal-600" size={20} />
+                <span className="text-gray-700 font-bold">Video Courses</span>
+              </div>
             </div>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-          >
-            <h3 className="text-gray-500 font-medium mb-1">Active Resources</h3>
-            <p className="text-3xl font-bold text-gray-900">45</p>
-            <div className="mt-4 flex items-center text-emerald-600 text-sm font-bold">
-              <span>+5 new today</span>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-          >
-            <h3 className="text-gray-500 font-medium mb-1">Engagement Rate</h3>
-            <p className="text-3xl font-bold text-gray-900">78%</p>
-            <div className="mt-4 flex items-center text-teal-600 text-sm font-bold">
-              <span>Very high</span>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Placeholder for more content */}
-        <div className="mt-8 bg-white p-8 rounded-2xl border border-gray-100 border-dashed flex flex-col items-center justify-center text-center min-h-[300px]">
-          <div className="bg-slate-50 p-4 rounded-full text-slate-400 mb-4">
-            <Layout size={48} />
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">
-            Ready to expand?
-          </h3>
-          <p className="text-gray-500 max-w-md">
-            This is a simple dashboard placeholder to test your login
-            integration. More features coming soon!
-          </p>
-        </div>
+        )}
       </main>
     </div>
   );

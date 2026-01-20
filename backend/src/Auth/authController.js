@@ -4,7 +4,6 @@ import db from "../db.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = "24h";
-
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
 
