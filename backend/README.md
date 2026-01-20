@@ -30,17 +30,7 @@ backend/
 
 ### 1. Cấu hình môi trường
 
-Tạo file `.env` (nếu chưa có) và điền các thông số:
-
-```env
-DB_USER=your_user
-DB_HOST=localhost
-DB_NAME=the_gathering
-DB_PASSWORD=your_password
-DB_PORT=5432
-PORT=5000
-JWT_SECRET=your_jwt_secret_key
-```
+Tạo file `.env` (nếu chưa có)
 
 ### 2. Cài đặt thư viện
 
