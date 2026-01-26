@@ -1,0 +1,8 @@
+-- Seed resources
+INSERT INTO resources (title, description, content_type, category, author, url, thumbnail_url) VALUES
+('Introduction to Meditation', 'A beginner guide to mindfulness and meditation practices.', 'guide', 'Wellness', 'Jane Doe', 'https://example.com/guide1', 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=400'),
+('Mastering React 2026', 'Comprehensive e-book on building modern web apps with React.', 'ebook', 'Technology', 'John Smith', 'https://example.com/ebook1', 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=400'),
+('Advanced PostgreSQL', 'A deep dive into performance tuning and complex queries.', 'course', 'Database', 'Alice Wilson', 'https://example.com/course1', 'https://images.unsplash.com/photo-1544383335-c533a39e8e60?auto=format&fit=crop&q=80&w=400'),
+('Healthy Cooking Basics', 'Learn to prepare nutritious meals in under 30 minutes.', 'guide', 'Lifestyle', 'Chef Mario', 'https://example.com/guide2', 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=400'),
+('Digital Marketing 101', 'Everything you need to know about SEO and social media.', 'ebook', 'Business', 'Sarah Johnson', 'https://example.com/ebook2', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=400'),
+('Yoga for Beginners', '10-day video course to start your yoga journey.', 'course', 'Wellness', 'Yoga Master', 'https://example.com/course2', 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=400');

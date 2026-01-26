@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { LogOut, Layout, User, Settings, Book, Sparkles } from "lucide-react";
+import { LogOut, Layout, User, Settings, Book } from "lucide-react";
 import { useState } from "react";
+import Library from "./Library";
 
 interface DashboardProps {
   user: any;
@@ -38,19 +39,17 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
             Overview
           </button>
 
-          {user?.role === "user" && (
-            <button
-              onClick={() => setActiveView("resources")}
-              className={`flex items-center gap-3 w-full p-3 rounded-xl font-semibold transition-all cursor-pointer ${
-                activeView === "resources"
-                  ? "bg-teal-50 text-teal-700"
-                  : "text-gray-600 hover:bg-gray-50"
-              }`}
-            >
-              <Book size={20} />
-              Resources
-            </button>
-          )}
+          <button
+            onClick={() => setActiveView("resources")}
+            className={`flex items-center gap-3 w-full p-3 rounded-xl font-semibold transition-all cursor-pointer ${
+              activeView === "resources"
+                ? "bg-teal-50 text-teal-700"
+                : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <Book size={20} />
+            Library
+          </button>
 
           <button className="flex items-center gap-3 w-full p-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
             <User size={20} />
@@ -163,37 +162,7 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
             </div>
           </>
         ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white p-12 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center min-h-[500px]"
-          >
-            <div className="bg-teal-50 p-6 rounded-3xl text-teal-600 mb-6 border-2 border-teal-100 shadow-inner">
-              <Book size={64} />
-            </div>
-            <h2 className="text-4xl font-black text-gray-900 mb-4 uppercase tracking-tighter">
-              Resource Hub
-            </h2>
-            <div className="w-16 h-1.5 bg-linear-to-r from-teal-500 to-emerald-500 rounded-full mb-8"></div>
-            <p className="text-xl text-gray-600 max-w-lg mb-10 leading-relaxed font-medium">
-              This is where our flagship{" "}
-              <span className="text-teal-600 font-bold">Feature Lớn</span> will
-              live. The infrastructure is ready, and we are preparing the
-              knowledge base.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md">
-              <div className="p-4 bg-slate-50 rounded-xl border border-gray-100 flex items-center gap-3">
-                <Sparkles className="text-teal-600" size={20} />
-                <span className="text-gray-700 font-bold">
-                  Guides & E-books
-                </span>
-              </div>
-              <div className="p-4 bg-slate-50 rounded-xl border border-gray-100 flex items-center gap-3">
-                <Sparkles className="text-teal-600" size={20} />
-                <span className="text-gray-700 font-bold">Video Courses</span>
-              </div>
-            </div>
-          </motion.div>
+          <Library />
         )}
       </main>
     </div>
