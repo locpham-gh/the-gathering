@@ -46,10 +46,6 @@ export default function Hero({ onJoinClick }: HeroProps) {
               className="group-hover:translate-x-1 transition-transform"
             />
           </button>
-
-          <button className="px-8 py-4 rounded-xl font-bold text-lg text-gray-700 hover:bg-white hover:shadow-md transition-all active:scale-95 border border-transparent hover:border-gray-200 cursor-pointer">
-            Explore Features
-          </button>
         </div>
 
         {/* Feature Cards */}
