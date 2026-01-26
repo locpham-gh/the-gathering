@@ -1,9 +1,10 @@
-import { Layout, Book, User, Settings, LogOut } from "lucide-react";
+import { Layout, Book, User as UserIcon, Settings, LogOut } from "lucide-react";
+import type { User } from "../../types";
 
 export type DashboardView = "overview" | "resources";
 
 interface SidebarProps {
-  user: any;
+  user: User | null;
   activeView: DashboardView;
   setActiveView: (view: DashboardView) => void;
   onLogout: () => void;
@@ -51,7 +52,7 @@ export default function Sidebar({
         </button>
 
         <button className="flex items-center gap-3 w-full p-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
-          <User size={20} />
+          <UserIcon size={20} />
           Profile
         </button>
         <button className="flex items-center gap-3 w-full p-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">

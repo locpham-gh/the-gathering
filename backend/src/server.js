@@ -1,15 +1,15 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import db from "./db.js";
+import db from "./config/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Import routes
-import authRoutes from "./Auth/authRoutes.js";
-import userRoutes from "./Users/userRoutes.js";
-import resourceRoutes from "./Resources/resourceRoutes.js";
+import authRoutes from "./modules/auth/authRoutes.js";
+import userRoutes from "./modules/users/userRoutes.js";
+import resourceRoutes from "./modules/resources/resourceRoutes.js";
 
 // Middleware
 app.use(cors());

@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import db from "./db.js";
+import db from "../config/db.js";
 
 async function forceUpdateUser() {
   const email = "user@gmail.com";

@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { Mail, Lock, LogIn, ChevronLeft } from "lucide-react";
 import { useState } from "react";
+import type { User } from "../../types";
 
 interface LoginFormProps {
   onBack: () => void;
-  onLoginSuccess: (token: string, user: any) => void;
+  onLoginSuccess: (token: string, user: User) => void;
 }
 
 export default function LoginForm({ onBack, onLoginSuccess }: LoginFormProps) {
@@ -36,8 +37,8 @@ export default function LoginForm({ onBack, onLoginSuccess }: LoginFormProps) {
       // Lưu token vào localStorage
       localStorage.setItem("token", data.token);
       onLoginSuccess(data.token, data.user);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Đăng nhập thất bại");
     } finally {
       setLoading(false);
     }

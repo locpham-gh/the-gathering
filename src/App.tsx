@@ -1,34 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./global.css";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import LoginForm from "./components/LoginForm";
-import Dashboard from "./components/Dashboard";
+import Navbar from "./components/layout/Navbar";
+import Hero from "./components/layout/Hero";
+import LoginForm from "./components/auth/LoginForm";
+import Dashboard from "./pages/Dashboard";
+import type { User } from "./types";
 
 type ViewMode = "landing" | "login" | "dashboard";
 
 function App() {
-  const [view, setView] = useState<ViewMode>("landing");
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    // Check for existing token/user in localStorage
+  const [view, setView] = useState<ViewMode>(() => {
     const savedToken = localStorage.getItem("token");
-    if (savedToken) {
-      // In a real app, we would verify the token here
-      // For now, let's look for a saved user object
-      const savedUser = localStorage.getItem("user");
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
-        setView("dashboard");
-      }
-    }
-  }, []);
+    return savedToken ? "dashboard" : "landing";
+  });
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   const goToLogin = () => setView("login");
   const goToHome = () => setView("landing");
 
-  const handleLoginSuccess = (token: string, userData: any) => {
+  const handleLoginSuccess = (token: string, userData: User) => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);

@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Library from "./Library";
-import Sidebar from "./Sidebar";
-import type { DashboardView } from "./Sidebar";
+import Sidebar from "../components/layout/Sidebar";
+import type { DashboardView } from "../components/layout/Sidebar";
+import type { User } from "../types";
 
 interface DashboardProps {
-  user: any;
+  user: User | null;
   onLogout: () => void;
 }
 
