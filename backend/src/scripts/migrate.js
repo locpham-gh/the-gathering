@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function runMigrations() {
-  const migrationsDir = path.join(__dirname, "../migrations");
+  const migrationsDir = path.join(__dirname, "../../migrations");
 
   try {
     const files = fs

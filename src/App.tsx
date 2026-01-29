@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./global.css";
-import Navbar from "./components/layout/Navbar";
-import Hero from "./components/layout/Hero";
+import Navbar from "./components/Landing/LandingNavbar";
+import Hero from "./components/Landing/Hero";
 import LoginForm from "./components/auth/LoginForm";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/DashboardLayout";
 import type { User } from "./types";
 
 type ViewMode = "landing" | "login" | "dashboard";

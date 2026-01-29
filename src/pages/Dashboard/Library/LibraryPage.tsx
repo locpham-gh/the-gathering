@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, BookOpen, FileText, Filter, Video, Star } from "lucide-react";
 
-import { fetchResources } from "../api/resources";
-import type { Resource } from "../types";
-import ResourceModal from "../components/Layout/Modals/ResourceModal";
+import { fetchResources } from "../../../api/resources";
+import type { Resource } from "../../../types";
+import ResourceModal from "../../../components/Layout/Modals/ResourceModal";
 
 export default function Library() {
   const [resources, setResources] = useState<Resource[]>([]);

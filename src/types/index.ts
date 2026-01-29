@@ -7,6 +7,11 @@ export interface Resource {
   author: string;
   url: string;
   thumbnail_url: string;
+  format: "pdf" | "mp4";
+  status: "pending" | "approved" | "rejected";
+  uploader_id: number;
+  uploader_username?: string;
+  created_at: string;
 }
 
 export interface User {

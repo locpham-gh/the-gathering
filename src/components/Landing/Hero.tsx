@@ -18,7 +18,7 @@ export default function Hero({ onJoinClick }: HeroProps) {
         transition={{ duration: 0.6 }}
         className="z-10 max-w-4xl"
       >
-        <div className="inline-flex items-center gap-2 bg-teal-50 text-teal-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-6 border border-teal-100">
+        <div className="inline-flex items-center gap-2 bg-teal-50 text-teal-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-6 border border-teal-300">
           <Sparkles size={16} />
           <span>New platform for the community</span>
         </div>
