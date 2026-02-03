@@ -8,8 +8,12 @@ import {
   LogOut,
   Trash2,
   Plus,
+  Search,
+  Image as ImageIcon,
+  Paperclip,
 } from "lucide-react";
 import type { Room, Message } from "../types";
+import type { User } from "../../../../types";
 
 interface ChatRoomProps {
   selectedRoom: Room;
@@ -25,7 +29,7 @@ interface ChatRoomProps {
   handleSendMessage: (e: React.FormEvent) => void;
   handleLeaveRoom: (room: Room) => void;
   handleDeleteRoom: (room: Room) => void;
-  user: any;
+  user: User;
   messagesEndRef: RefObject<HTMLDivElement | null>;
 }
 
@@ -47,7 +51,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
   return (
     <div className="h-full flex flex-col min-h-0 bg-white/40 backdrop-blur-md rounded-[2.5rem] overflow-hidden border border-white/50 shadow-sm animate-in fade-in zoom-in-[0.99] duration-500">
       {/* Chat Header */}
-      <div className="px-8 py-6 border-b border-white/50 flex items-center justify-between bg-white/20">
+      <div className="px-8 py-6 border-b border-white/50 flex items-center justify-between bg-white/20 shrink-0">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSelectedRoom(null)}
@@ -68,6 +72,20 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
             </p>
           </div>
         </div>
+
+        <div className="hidden md:flex flex-1 max-w-sm mx-10 relative group">
+          <input
+            type="text"
+            placeholder="Search messages..."
+            className="w-full pl-10 pr-4 py-2 bg-white/50 border border-white/50 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all text-xs font-medium placeholder:text-slate-400"
+            disabled
+          />
+          <Search
+            size={14}
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors"
+          />
+        </div>
+
         <div className="flex items-center gap-3">
           {user?.id === selectedRoom.creator_id ? (
             <button
@@ -99,7 +117,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
       <div className="flex-1 flex overflow-hidden">
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col min-w-0">
-          <div className="flex-1 overflow-y-auto p-8 space-y-6">
+          <div className="flex-1 overflow-y-auto px-8 pt-8 pb-4">
             {messages.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-slate-400">
                 <div className="w-16 h-16 bg-white/50 rounded-3xl flex items-center justify-center mb-4 shadow-sm">
@@ -115,15 +133,16 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
                 return (
                   <div
                     key={msg.id}
-                    className={`group p-4 rounded-2xl transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 ${
-                      isOwn
-                        ? "bg-indigo-50/50 border border-indigo-100/50"
-                        : "hover:bg-white/40"
-                    }`}
+                    className={`flex w-full mb-6 ${isOwn ? "justify-end" : "justify-start"}`}
                   >
-                    <div className="flex items-start gap-4">
+                    <div
+                      className={`group flex items-start gap-3 max-w-[85%] animate-in fade-in slide-in-from-bottom-2 duration-300 ${
+                        isOwn ? "flex-row-reverse" : ""
+                      }`}
+                    >
+                      {/* Avatar */}
                       <div
-                        className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold shrink-0 shadow-sm ${
+                        className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold shrink-0 shadow-sm transition-transform hover:scale-105 ${
                           isOwn
                             ? "bg-indigo-600 text-white"
                             : "bg-indigo-100 text-indigo-600"
@@ -131,24 +150,26 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
                       >
                         {msg.username ? msg.username[0].toUpperCase() : "U"}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-black text-slate-900">
-                              {msg.username}{" "}
-                              {isOwn && (
-                                <span className="text-[10px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-md ml-1">
-                                  YOU
-                                </span>
-                              )}
-                            </span>
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                              {new Date(msg.created_at).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </span>
-                          </div>
+
+                      {/* Content */}
+                      <div
+                        className={`flex flex-col ${isOwn ? "items-end" : "items-start"}`}
+                      >
+                        {/* Header info */}
+                        <div
+                          className={`flex items-center gap-2 mb-1.5 px-1 ${
+                            isOwn ? "flex-row-reverse" : ""
+                          }`}
+                        >
+                          <span className="text-sm font-black text-slate-900">
+                            {msg.username}
+                          </span>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                            {new Date(msg.created_at).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </span>
                           <button
                             onClick={() =>
                               setReplyTo({
@@ -157,38 +178,56 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
                                 content: msg.content,
                               })
                             }
-                            className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-white rounded-lg text-slate-400 hover:text-indigo-600 transition-all focus:opacity-100"
+                            className="p-1.5 hover:bg-white rounded-lg text-slate-400 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100"
                             title="Reply"
                           >
-                            <ArrowLeft size={14} className="rotate-180" />
+                            <ArrowLeft
+                              size={12}
+                              className={isOwn ? "" : "rotate-180"}
+                            />
                           </button>
                         </div>
 
-                        {msg.parent_id && (
-                          <div className="mb-2 p-3 bg-white/30 border-l-4 border-indigo-200 rounded-r-xl text-xs">
-                            <p className="font-black text-indigo-400 mb-1 uppercase tracking-widest text-[9px]">
-                              Replying to @{msg.parent_username}
-                            </p>
-                            <p className="text-slate-500 line-clamp-1 italic">
-                              "{msg.parent_content}"
-                            </p>
-                          </div>
-                        )}
-
-                        <p
-                          className={`text-sm leading-relaxed whitespace-pre-wrap ${
-                            isOwn ? "text-slate-700" : "text-slate-600"
+                        {/* Message Bubble */}
+                        <div
+                          className={`relative p-4 rounded-2xl shadow-sm transition-all hover:shadow-md ${
+                            isOwn
+                              ? "bg-white border border-indigo-100 rounded-tr-none text-right"
+                              : "bg-white/60 backdrop-blur-sm border border-white/50 rounded-tl-none text-left"
                           }`}
                         >
-                          {msg.content}
-                        </p>
+                          {msg.parent_id && (
+                            <div
+                              className={`mb-3 p-3 bg-slate-50/50 border-l-4 border-indigo-200 rounded-r-xl text-xs ${
+                                isOwn
+                                  ? "text-right border-l-0 border-r-4"
+                                  : "text-left"
+                              }`}
+                            >
+                              <p className="font-black text-indigo-400 mb-1 uppercase tracking-widest text-[9px]">
+                                @{msg.parent_username}
+                              </p>
+                              <p className="text-slate-500 line-clamp-1 italic">
+                                "{msg.parent_content}"
+                              </p>
+                            </div>
+                          )}
+
+                          <p
+                            className={`text-sm leading-relaxed whitespace-pre-wrap ${
+                              isOwn ? "text-slate-700" : "text-slate-600"
+                            }`}
+                          >
+                            {msg.content}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 );
               })
             )}
-            <div ref={messagesEndRef} />
+            <div ref={messagesEndRef} className="h-0 w-0 shrink-0" />
           </div>
 
           {/* Input Area */}
@@ -214,25 +253,47 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
                 </button>
               </div>
             )}
-            <form onSubmit={handleSendMessage} className="relative">
-              <input
-                type="text"
-                placeholder={
-                  replyTo
-                    ? `Reply to @${replyTo.username}...`
-                    : `Message #${selectedRoom.code}`
-                }
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                className="w-full pl-6 pr-14 py-4 bg-white/60 backdrop-blur-md border border-white/50 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all shadow-sm placeholder:text-slate-400 text-slate-700 font-medium"
-              />
-              <button
-                type="submit"
-                disabled={!newMessage.trim() || sending}
-                className="absolute right-3 top-3 p-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 disabled:bg-slate-300 disabled:shadow-none"
-              >
-                <Send size={20} />
-              </button>
+            <form
+              onSubmit={handleSendMessage}
+              className="relative flex items-center gap-3"
+            >
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  placeholder={
+                    replyTo
+                      ? `Reply to @${replyTo.username}...`
+                      : `Message #${selectedRoom.code}`
+                  }
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  className="w-full pl-6 pr-14 py-4 bg-white/60 backdrop-blur-md border border-white/50 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all shadow-sm placeholder:text-slate-400 text-slate-700 font-medium"
+                />
+                <button
+                  type="submit"
+                  disabled={!newMessage.trim() || sending}
+                  className="absolute right-3 top-3 p-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 disabled:bg-slate-300 disabled:shadow-none"
+                >
+                  <Send size={20} />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  className="p-3 bg-white/50 hover:bg-white text-slate-400 hover:text-indigo-600 rounded-2xl border border-white/50 transition-all shadow-sm"
+                  title="Attach Image"
+                >
+                  <ImageIcon size={20} />
+                </button>
+                <button
+                  type="button"
+                  className="p-3 bg-white/50 hover:bg-white text-slate-400 hover:text-indigo-600 rounded-2xl border border-white/50 transition-all shadow-sm"
+                  title="Attach File"
+                >
+                  <Paperclip size={20} />
+                </button>
+              </div>
             </form>
             <p className="mt-3 text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
               Press Enter to send message

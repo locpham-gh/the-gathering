@@ -54,7 +54,7 @@ export default function ForumPage() {
   }, []);
 
   useEffect(() => {
-    let interval: any;
+    let interval: ReturnType<typeof setInterval> | undefined;
 
     if (selectedRoom && selectedRoom.is_member) {
       interval = setInterval(async () => {
@@ -94,7 +94,7 @@ export default function ForumPage() {
                 )
               ).json();
               return { ...room, is_member: detail.data?.is_member };
-            } catch (e) {
+            } catch {
               return room;
             }
           }),

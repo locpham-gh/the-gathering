@@ -59,25 +59,34 @@ export const getResources = async (req, res) => {
 };
 
 /**
- * Upload a new resource (pending approval)
+ * Upload a new resource (Admin uploads are approved, others pending)
  */
 export const uploadResource = async (req, res) => {
-    const { title, description, content_type, url, thumbnail_url, category, author, format } = req.body;
+    const { title, description, content_type, category, author, format } = req.body;
     const uploader_id = req.user.id;
+    const role = req.user.role;
+
+    // Handle uploaded files
+    const file = req.files?.['file']?.[0];
+    const thumbnail = req.files?.['thumbnail']?.[0];
+
+    const fileUrl = file ? `/uploads/${file.filename}` : req.body.url;
+    const thumbUrl = thumbnail ? `/uploads/${thumbnail.filename}` : req.body.thumbnail_url;
 
     try {
         const query = `
             INSERT INTO resources (title, description, content_type, url, thumbnail_url, category, author, format, uploader_id, status)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pending')
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *
         `;
-        const values = [title, description, content_type, url, thumbnail_url, category, author, format, uploader_id];
+        const status = role === 'admin' ? 'approved' : 'pending';
+        const values = [title, description, content_type, fileUrl, thumbUrl, category, author, format, uploader_id, status];
 
         const { rows } = await db.query(query, values);
 
         res.status(201).json({
             success: true,
-            message: "Resource uploaded and pending for review",
+            message: role === 'admin' ? "Resource published successfully" : "Resource uploaded and pending for review",
             data: rows[0]
         });
     } catch (error) {
@@ -118,6 +127,60 @@ export const moderateResource = async (req, res) => {
     } catch (error) {
         console.error("Error moderating resource:", error);
         res.status(500).json({ success: false, message: "Failed to update resource status" });
+    }
+};
+
+/**
+ * Update an existing resource (Admin only)
+ */
+export const updateResource = async (req, res) => {
+    const { id } = req.params;
+    const { title, description, content_type, category, author, format } = req.body;
+
+    try {
+        // Find existing resource first to check if it exists
+        const { rows: existingRows } = await db.query("SELECT * FROM resources WHERE id = $1", [id]);
+        if (existingRows.length === 0) {
+            return res.status(404).json({ success: false, message: "Resource not found" });
+        }
+
+        // Handle uploaded files
+        const file = req.files?.['file']?.[0];
+        const thumbnail = req.files?.['thumbnail']?.[0];
+
+        // If new file uploaded, use new path, otherwise keep old
+        const fileUrl = file ? `/uploads/${file.filename}` : existingRows[0].url;
+        const thumbUrl = thumbnail ? `/uploads/${thumbnail.filename}` : existingRows[0].thumbnail_url;
+
+        const query = `
+            UPDATE resources 
+            SET title = $1, 
+                description = $2, 
+                content_type = $3, 
+                url = $4, 
+                thumbnail_url = $5, 
+                category = $6, 
+                author = $7, 
+                format = $8,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = $9
+            RETURNING *
+        `;
+        const values = [title, description, content_type, fileUrl, thumbUrl, category, author, format, id];
+
+        const { rows } = await db.query(query, values);
+
+        res.json({
+            success: true,
+            message: "Resource updated successfully",
+            data: rows[0]
+        });
+    } catch (error) {
+        console.error("Error updating resource:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to update resource"
+        });
     }
 };
 

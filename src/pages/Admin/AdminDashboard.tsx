@@ -3,6 +3,7 @@ import AdminSidebar, {
   type AdminView,
 } from "../../components/Layout/Navigation/AdminSidebar";
 import AdminPanel from "./AdminPanel";
+import AdminLibrary from "./AdminLibrary";
 import SettingsModal from "../../components/Layout/Modals/SettingsModal";
 import type { User } from "../../types";
 
@@ -89,6 +90,8 @@ export default function AdminDashboard({
           <AdminPanel
             initialTab={activeView === "forum" ? "forum" : "overview"}
           />
+        ) : activeView === "library" ? (
+          <AdminLibrary />
         ) : (
           <div className="bg-slate-900 border border-slate-800 rounded-[2.5rem] p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
             <div className="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center text-slate-600 mb-6">

@@ -10,11 +10,8 @@ async function main() {
         await client.connect();
         console.log('Connected to DB');
 
-        await client.query('ALTER TABLE messages ADD COLUMN IF NOT EXISTS parent_id INTEGER REFERENCES messages(id) ON DELETE SET NULL;');
-        console.log('Added parent_id column');
-
-        await client.query('CREATE INDEX IF NOT EXISTS idx_messages_parent_id ON messages(parent_id);');
-        console.log('Created index');
+        await client.query('TRUNCATE TABLE resources CASCADE;');
+        console.log('Truncated resources table');
 
         console.log('Migration successful');
     } catch (err) {

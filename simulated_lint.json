@@ -1,0 +1,15 @@
+[
+  {
+    "filePath": "C:\\dev\\apps\\the-gathering\\src\\components\\Layout\\Modals\\VideoPlayerModal.tsx",
+    "messages": [
+      {
+        "ruleId": "react-hooks/exhaustive-deps",
+        "severity": 2,
+        "message": "React Hook useEffect has a missing dependency: 'handlePlayerReady'. Either include it or remove the dependency array. If 'handlePlayerReady' changes too often, find the parent component that defines it and wrap that definition in useCallback.",
+        "line": 93,
+        "column": 13,
+        "nodeType": "Identifier"
+      }
+    ]
+  }
+]

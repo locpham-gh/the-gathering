@@ -40,8 +40,11 @@ export default function Library() {
     loadResources();
   }, [search, activeType]);
 
-  const getFormatIcon = (type: string) => {
-    switch (type) {
+  const getFormatIcon = (resource: Resource) => {
+    if (resource.format === "pdf") return <FileText className="w-3 h-3" />;
+    if (resource.format === "mp4") return <Video className="w-3 h-3" />;
+
+    switch (resource.content_type) {
       case "guide":
         return <FileText className="w-3 h-3" />;
       case "ebook":
@@ -166,7 +169,7 @@ export default function Library() {
                         />
                         {/* Overlay Type Icon */}
                         <div className="absolute top-3 right-3 bg-white/80 text-slate-900 p-2 rounded-xl backdrop-blur-md border border-white/50 shadow-sm">
-                          {getFormatIcon(resource.content_type)}
+                          {getFormatIcon(resource)}
                         </div>
                         {/* Hover Overlay */}
                         <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">

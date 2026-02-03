@@ -6,15 +6,18 @@ import {
   ShieldCheck,
   LogOut,
   ChevronRight,
+  BookOpen,
 } from "lucide-react";
 
-export type AdminView = "overview" | "forum" | "users" | "settings";
+import type { User } from "../../../types";
+
+export type AdminView = "overview" | "forum" | "users" | "library" | "settings";
 
 interface AdminSidebarProps {
   activeView: AdminView;
   setActiveView: (view: AdminView) => void;
   onLogout: () => void;
-  user: any;
+  user: User | null;
 }
 
 export default function AdminSidebar({
@@ -26,6 +29,7 @@ export default function AdminSidebar({
   const menuItems = [
     { id: "overview", icon: BarChart3, label: "Analytics" },
     { id: "forum", icon: MessageSquare, label: "Forum Management" },
+    { id: "library", icon: BookOpen, label: "Library Management" },
     { id: "users", icon: Users, label: "User Management" },
   ];
 

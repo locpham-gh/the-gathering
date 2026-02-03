@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   MessageCircle,
   Users,
@@ -41,19 +41,6 @@ export default function AdminForum() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    loadAdminRooms();
-  }, []);
-
-  useEffect(() => {
-    let interval: any;
-    if (monitoringRoom) {
-      loadMessages();
-      interval = setInterval(loadMessages, 3000);
-    }
-    return () => clearInterval(interval);
-  }, [monitoringRoom]);
-
   const loadAdminRooms = async () => {
     setLoading(true);
     try {
@@ -66,15 +53,28 @@ export default function AdminForum() {
     }
   };
 
-  const loadMessages = async () => {
+  useEffect(() => {
+    loadAdminRooms();
+  }, []);
+
+  const loadMessages = useCallback(async () => {
     if (!monitoringRoom) return;
     try {
       const result = await fetchAdminMessages(monitoringRoom.code);
       if (result.success) setMessages(result.data);
-    } catch (error) {
-      console.error("Error loading messages:", error);
+    } catch {
+      console.error("Error loading messages:");
     }
-  };
+  }, [monitoringRoom]);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | undefined;
+    if (monitoringRoom) {
+      loadMessages();
+      interval = setInterval(loadMessages, 3000);
+    }
+    return () => clearInterval(interval);
+  }, [monitoringRoom, loadMessages]);
 
   const handleToggleStatus = async (room: AdminRoom) => {
     try {
@@ -87,7 +87,7 @@ export default function AdminForum() {
           ),
         );
       }
-    } catch (error) {
+    } catch {
       alert("Failed to update room status");
     }
   };

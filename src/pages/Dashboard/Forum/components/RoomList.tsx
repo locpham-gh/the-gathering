@@ -1,6 +1,7 @@
 import React from "react";
 import { MessageCircle, Plus, Users, Hash, Trash2 } from "lucide-react";
 import type { Room } from "../types";
+import type { User } from "../../../../types";
 
 interface RoomListProps {
   rooms: Room[];
@@ -10,7 +11,7 @@ interface RoomListProps {
   handleOpenRoom: (room: Room) => void;
   handleDeleteRoom: (room: Room) => void;
   setShowCreateModal: (show: boolean) => void;
-  user: any;
+  user: User;
 }
 
 const RoomList: React.FC<RoomListProps> = ({
