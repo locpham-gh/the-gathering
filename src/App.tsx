@@ -4,6 +4,7 @@ import Navbar from "./components/Landing/LandingNavbar";
 import Hero from "./components/Landing/Hero";
 import LoginForm from "./components/auth/LoginForm";
 import Dashboard from "./pages/Dashboard/DashboardLayout";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 import type { User } from "./types";
 
 type ViewMode = "landing" | "login" | "dashboard";
@@ -54,9 +55,12 @@ function App() {
         <LoginForm onBack={goToHome} onLoginSuccess={handleLoginSuccess} />
       )}
 
-      {view === "dashboard" && (
-        <Dashboard user={user} onLogout={handleLogout} />
-      )}
+      {view === "dashboard" &&
+        (user?.role === "admin" ? (
+          <AdminDashboard user={user} onLogout={handleLogout} />
+        ) : (
+          <Dashboard user={user} onLogout={handleLogout} />
+        ))}
     </div>
   );
 }

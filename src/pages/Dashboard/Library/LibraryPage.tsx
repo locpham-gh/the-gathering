@@ -54,7 +54,7 @@ export default function Library() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-140px)]">
+    <div className="flex flex-col h-full">
       {/* Header & Search */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <div className="w-full md:w-96 relative">

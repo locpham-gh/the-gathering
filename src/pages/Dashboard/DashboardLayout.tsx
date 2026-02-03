@@ -5,9 +5,9 @@ import type { DashboardView } from "../../components/Layout/Navigation/Sidebar";
 import type { User } from "../../types";
 import SettingsModal from "../../components/Layout/Modals/SettingsModal";
 import UserDashboard from "./Overview/UserOverview";
-import AdminPanel from "../Admin/AdminPanel";
-import { MessageCircle, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import DashboardHeader from "../../components/Layout/Navigation/DashboardHeader";
+import ForumPage from "./Forum/ForumPage";
 
 interface DashboardProps {
   user: User | null;
@@ -39,40 +39,30 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 p-8 overflow-y-auto z-10 transition-all duration-300">
+      <main className="flex-1 p-6 flex flex-col h-full min-h-0 overflow-hidden z-10 transition-all duration-300">
         <DashboardHeader user={user} activeView={activeView} />
 
-        {activeView === "overview" ? (
-          user?.role === "admin" ? (
-            <AdminPanel />
-          ) : (
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          {activeView === "overview" ? (
             <UserDashboard user={user} setActiveView={setActiveView} />
-          )
-        ) : activeView === "resources" ? (
-          <Library />
-        ) : (
-          <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
-            <div
-              className={`w-20 h-20 rounded-3xl flex items-center justify-center mb-6 shadow-xl ${
-                activeView === "forum"
-                  ? "bg-indigo-50 text-indigo-500"
-                  : "bg-rose-50 text-rose-500"
-              }`}
-            >
-              {activeView === "forum" ? (
-                <MessageCircle size={40} />
-              ) : (
+          ) : activeView === "resources" ? (
+            <Library />
+          ) : activeView === "forum" ? (
+            <ForumPage />
+          ) : (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-6 shadow-xl bg-rose-50 text-rose-500">
                 <Calendar size={40} />
-              )}
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 capitalize">
+                Events Booking
+              </h2>
+              <p className="text-gray-500 mt-2 max-w-sm">
+                This feature is currently being gathered. Coming very soon!
+              </p>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 capitalize">
-              {activeView === "forum" ? "Community Forum" : "Events Booking"}
-            </h2>
-            <p className="text-gray-500 mt-2 max-w-sm">
-              This feature is currently being gathered. Coming very soon!
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </main>
     </div>
   );

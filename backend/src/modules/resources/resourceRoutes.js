@@ -5,7 +5,7 @@ import {
     uploadResource,
     moderateResource
 } from "./resourceController.js";
-import { authenticateToken, isAdmin } from "../Auth/authMiddleware.js";
+import { authenticateToken, isAdmin } from "../auth/authMiddleware.js";
 
 const router = express.Router();
 

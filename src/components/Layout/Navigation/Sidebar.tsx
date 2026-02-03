@@ -24,9 +24,9 @@ export default function Sidebar({
   ];
 
   return (
-    <aside className="w-20 h-screen flex-none bg-white/40 backdrop-blur-xl border-r border-white/20 hidden md:flex flex-col sticky top-0 items-center py-6 z-20">
-      <div className="mb-10 px-4">
-        <div className="bg-teal-600 w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-teal-100 select-none cursor-default">
+    <aside className="w-16 h-screen flex-none bg-white/40 backdrop-blur-xl border-r border-white/20 hidden md:flex flex-col sticky top-0 items-center py-6 z-20">
+      <div className="mb-8 px-4">
+        <div className="bg-teal-600 w-10 h-10 rounded-xl flex items-center justify-center text-white text-base font-bold shadow-lg shadow-teal-100 select-none cursor-default">
           TG
         </div>
       </div>
@@ -43,11 +43,11 @@ export default function Sidebar({
                 : "text-gray-400 hover:bg-gray-50 hover:text-gray-600"
             }`}
           >
-            <item.icon size={24} />
+            <item.icon size={20} />
             {activeView === item.id && (
               <motion.div
                 layoutId="sidebar-indicator"
-                className="absolute left-[-12px] w-1.5 h-8 bg-teal-600 rounded-r-full"
+                className="absolute left-[-14px] w-1.5 h-6 bg-teal-600 rounded-r-full"
               />
             )}
 
@@ -66,7 +66,7 @@ export default function Sidebar({
           title="Settings"
           className="flex items-center justify-center w-full aspect-square text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded-2xl transition-all cursor-pointer group relative"
         >
-          <Settings size={24} />
+          <Settings size={20} />
           <div className="absolute left-full ml-4 px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none shadow-xl">
             Settings
             <div className="absolute top-1/2 left-[-4px] transform -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45" />

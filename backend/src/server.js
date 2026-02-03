@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 import authRoutes from "./modules/auth/authRoutes.js";
 import userRoutes from "./modules/users/userRoutes.js";
 import resourceRoutes from "./modules/resources/resourceRoutes.js";
+import forumRoutes from "./modules/forum/forumRoutes.js";
 
 // Middleware
 app.use(cors());
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/resources", resourceRoutes);
+app.use("/api/forum", forumRoutes);
 
 // Kiểm tra sức khỏe hệ thống (Health Check)
 app.get("/api/health", async (req, res) => {

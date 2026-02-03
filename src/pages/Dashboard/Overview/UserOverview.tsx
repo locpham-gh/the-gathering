@@ -13,7 +13,7 @@ export default function UserDashboard({
   setActiveView,
 }: UserDashboardProps) {
   return (
-    <div className="space-y-10 relative pb-10">
+    <div className="h-full overflow-y-auto space-y-10 relative pb-10 pr-2 scrollbar-hide">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}

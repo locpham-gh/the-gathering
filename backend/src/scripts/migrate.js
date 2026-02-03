@@ -8,12 +8,23 @@ const __dirname = path.dirname(__filename);
 
 async function runMigrations() {
   const migrationsDir = path.join(__dirname, "../../migrations");
+  const targetFile = process.argv[2];
 
   try {
-    const files = fs
+    let files = fs
       .readdirSync(migrationsDir)
       .filter((f) => f.endsWith(".sql"))
       .sort();
+
+    if (targetFile) {
+      if (!fs.existsSync(path.join(migrationsDir, targetFile))) {
+        console.error(`❌ Không tìm thấy file migration: ${targetFile}`);
+        process.exit(1);
+      }
+      files = [targetFile];
+    } else {
+      console.log("ℹ️ Đang chạy tất cả migrations...");
+    }
 
     for (const file of files) {
       console.log(`🚀 Đang chạy migration: ${file}`);
@@ -22,7 +33,7 @@ async function runMigrations() {
       console.log(`✅ Hoàn thành migration: ${file}`);
     }
 
-    console.log("🎊 Tất cả migrations đã được thực hiện thành công!");
+    console.log("🎊 Đã hoàn thành xử lý migration!");
     process.exit(0);
   } catch (error) {
     console.error("❌ Lỗi khi chạy migrations:", error);
